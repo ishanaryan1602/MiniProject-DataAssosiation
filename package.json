@@ -1,0 +1,21 @@
+{
+  "name": "miniproject-dataassosiation",
+  "version": "1.0.0",
+  "description": "this is a mini project where user that are loggen in can create posts , like them and edit as well \r I have used \r jwt \r bcrypt \r cookies \r tailwind \r ejs \r ans some standard packages",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.1",
+    "nodemon": "^3.1.3"
+  }
+}
