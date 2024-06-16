@@ -19,29 +19,25 @@
           👋
         </h1>
         <p class="font-light mt-2">let's get started by creating a post</p>
-        <form action="/post" method="post">
-          <textarea name="" class="border-2 border-zinc-800 bg-transparent w-[600px] h-[100px] resize-none block mt-5 rounded-md p-3 outline-none" placeholder="What's on your mind ?"></textarea>
+        <form action="/profile" method="post">
+          <textarea name="" class="border-2 border-zinc-800 bg-transparent w-[600px] h-[100px] resize-none block mt-5 rounded-md p-3 outline-none" placeholder="What's on your mind ?" name="content"></textarea>
           <input type="submit" value="Create" class="border-1 bg-blue-500 rounded-md px-5 py-2 mt-4 block text-sm hover:bg-blue-600 duration hover:duration-300 cursor-pointer">
         </form>
         <div class="posts mt-20">
           <h3 class="text-zinc-400">Your Posts</h3>
           <div class="postcontainer pt-5 flex flex-wrap gap-5">
-            <div class="post w-1/3 p-5 border-2 border-zinc-800 bg-transparent rounded-lg">
-              <h4 class="mb-3 text-blue-500">@username</h4>
-              <p class="text-sm tracking-tight">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda dolorem, repellat ipsa eum cumque accusamus ad ea blanditiis, corporis voluptatibus rem nobis nemo ullam non, fugiat voluptatem! Dolorem, atque nostrum?</p>
+            <% user.posts.forEach((post, index) => { %>
+              <div class="post w-1/3 p-5 border-2 border-zinc-800 bg-transparent rounded-lg">
+              <h4 class="mb-3 text-blue-500"> <%= index+1 %> @<%= user.username%>  </h4>
+              <p class="text-sm tracking-tight">
+                <%= post.content %>
+              </p>
               <div class="btns flex gap-4 mt-5">
                 <a href="" class="text-blue-500"><span class="material-symbols-outlined">thumb_up</span></a>
                 <a href="" class="text-zinc-600">Edit</a>
               </div>
             </div>
-            <div class="post w-1/3 p-5 border-2 border-zinc-800 bg-transparent rounded-lg">
-              <h4 class="mb-3 text-blue-500">@username</h4>
-              <p class="text-sm tracking-tight">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda dolorem, repellat ipsa eum cumque accusamus ad ea blanditiis, corporis voluptatibus rem nobis nemo ullam non, fugiat voluptatem! Dolorem, atque nostrum?</p>
-              <div class="btns flex gap-4 mt-5">
-                <a href="" class="text-blue-500"><span class="material-symbols-outlined">thumb_up</span></a>
-                <a href="" class="text-zinc-600">Edit</a>
-              </div>
-            </div>
+                <% }) %>                       
           </div>
         </div>
       </div>
