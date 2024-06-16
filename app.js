@@ -64,7 +64,12 @@ app.post("/login", async (req, res) => {
   if (!user) return res.redirect("/login");
   bcrypt.compare(password, user.password, (err, result) => {
     if (!result) return res.redirect("/login");
-    res.send("success");
+    const token = jwt.sign(
+      { email: user.email, userid: user._id },
+      "secret_key"
+    );
+    res.cookie("token", token);
+    res.redirect("/profile");
   });
 });
 
@@ -73,10 +78,21 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-// function isLoggedIn(req, res, next) {
-//   if (req.cookies.token === "") res.send("nope");
-//   next();
-// }
+app.get("/profile", isLoggedIn, async (req, res) => {
+  const { email } = req.user;
+  const user = await userModel.findOne({ email });
+  console.log(user);
+  res.render("profile", { user });
+});
+
+function isLoggedIn(req, res, next) {
+  if (!req.cookies.token) res.redirect("/login");
+  else {
+    let data = jwt.verify(req.cookies.token, "secret_key");
+    req.user = data;
+    next();
+  }
+}
 
 app.listen(3000, () => {
   console.log("listening on port 3000!");
