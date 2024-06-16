@@ -74,14 +74,13 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-  res.clearCookie("token");
+  res.cookie("token", "");
   res.redirect("/login");
 });
 
 app.get("/profile", isLoggedIn, async (req, res) => {
   const { email } = req.user;
   const user = await userModel.findOne({ email });
-  console.log(user);
   res.render("profile", { user });
 });
 
