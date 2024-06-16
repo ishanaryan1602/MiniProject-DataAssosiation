@@ -86,35 +86,19 @@ app.get("/profile", isLoggedIn, async (req, res) => {
 
 app.post("/profile", isLoggedIn, async (req, res) => {
   const { email } = req.user;
+  const user = await userModel.findOne({ email }).populate("posts");
+  const {content} = req.body;
 
-  try {
-    const user = await userModel.findOne({ email });
+  const post = await postModel.create({
+    user: user._id,
+    content
+  });
+  user.posts.push(post._id);
+  await user.save();
 
-    const { content } = req.body; // Destructure content from req.body
-
-    if (!content || content.trim() === "") { // Check if content is empty or whitespace
-      return res.status(400).render("profile", {
-        user,
-        error: "Content cannot be empty."
-      });
-    }
-
-    let post = await postModel.create({
-      user: user._id,
-      content: content.trim(), // Trim content before saving
-    });
-
-    user.posts.push(post._id);
-    await user.save();
-
-    res.render("profile", { user });
-
-  } catch (err) {
-    console.error("Error in /profile route:", err);
-    res.status(500).send("Internal Server Error");
-  }
+  console.log(content,"at",new Date().toLocaleTimeString());
+  res.render("profile", { user });
 });
-
 
 
 function isLoggedIn(req, res, next) {
