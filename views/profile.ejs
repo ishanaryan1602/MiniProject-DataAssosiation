@@ -51,7 +51,7 @@
           <h3 class="text-zinc-400">Your Posts</h3>
           <div class="postcontainer pt-5 flex flex-wrap gap-5">
             <% user.posts.reverse().forEach((post, index) => { %>
-            <div class="post w-[100%] p-5 border-2 border-zinc-800 bg-transparent rounded-lg flex flex-col justify-between">
+            <div class="post w-[max-content] p-5 border-2 border-zinc-800 bg-transparent rounded-lg flex flex-col justify-between" style="min-width: 300px;">
               <h4 class="mb-3 text-blue-500">@<%= user.username%>  </h4>
               <p class="tracking-tight">
                 <%= post.content %>
@@ -74,7 +74,9 @@
                 
                 <a href="/edit/<%= post._id %>" class="text-zinc-400 hover:text-zinc-200" style="transition: 0.6s;">Edit</a>
               </div>
-              <p class="mt-3 font-light text-sm tracking-tighter"><%= new Date(post.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) %></p>
+              <p class="mt-3 font-light text-sm tracking-tighter w-full flex justify-end">
+                <%= new Date(post.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) %>
+              </p>
             </div>
             <%#index+1%> 
             <% }) %>
