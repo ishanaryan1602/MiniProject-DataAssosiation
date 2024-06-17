@@ -21,10 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
 app.get("/register", (req, res) => {
   res.render("index");
 });
@@ -102,34 +98,38 @@ app.post("/profile", isLoggedIn, async (req, res) => {
   res.redirect("/profile");
 });
 
-app.get('/like/:id', isLoggedIn ,async (req, res) => {
-  let post = await postModel.findOne({_id: req.params.id}).populate("user");
-  if(post.likes.indexOf(req.user.userid) === -1) post.likes.push(req.user.userid);
-  else post.likes.splice(post.likes.indexOf(req.user.userid),1)
+app.get("/like/:id", isLoggedIn, async (req, res) => {
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+  if (post.likes.indexOf(req.user.userid) === -1)
+    post.likes.push(req.user.userid);
+  else post.likes.splice(post.likes.indexOf(req.user.userid), 1);
   await post.save();
-  res.redirect ("/profile");
+  res.redirect("/profile");
 });
 
-app.get('/edit/:id', isLoggedIn ,async (req, res) => {
-  const post = await postModel.findOne({_id: req.params.id})
-  return res.render("edit",{
-    post
-  })
+app.get("/edit/:id", isLoggedIn, async (req, res) => {
+  const post = await postModel.findOne({ _id: req.params.id });
+  return res.render("edit", {
+    post,
+  });
 });
 
-app.post('/update/:id', isLoggedIn ,async (req, res) => {
-  const post = await postModel.findOneAndUpdate({_id: req.params.id},{
-    content: req.body.content
-  })
+app.post("/update/:id", isLoggedIn, async (req, res) => {
+  await postModel.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      content: req.body.content,
+    }
+  );
   return res.redirect("/profile");
 });
 
 function isLoggedIn(req, res, next) {
   if (!req.cookies.token) res.redirect("/login");
-    let data = jwt.verify(req.cookies.token, "secret_key");
-    req.user = data;
-    // console.log(req.user);
-    next();
+  let data = jwt.verify(req.cookies.token, "secret_key");
+  req.user = data;
+  // console.log(req.user);
+  next();
 }
 
 app.listen(3000, () => {
