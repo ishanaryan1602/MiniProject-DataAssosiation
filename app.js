@@ -145,6 +145,11 @@ function handleUnknownRoute(req, res, next) {
   }
 }
 
+app.get("*", handleUnknownRoute, function (req, res) {
+  // Handle unmatched routes here
+  res.render("error")
+});
+
 app.listen(3000, () => {
   console.log("listening on port 3000!");
 });
