@@ -87,35 +87,35 @@ app.get("/profile", isLoggedIn, async (req, res) => {
 });
 
 app.post("/profile", isLoggedIn, async (req, res) => {
-  let user = await userModel.findOne({ email: req.user.email }).populate("posts");
+  let user = await userModel
+    .findOne({ email: req.user.email })
+    .populate("posts");
   const { content } = req.body;
-
   if (content && content.trim() !== "") {
     const post = await postModel.create({
       user: user._id,
       content,
     });
-
-    // Log the created post to debug
-    console.log('Post created:', post);
-
     user.posts.push(post._id);
     await user.save();
   }
-
-  console.log(content, "at", new Date().toLocaleTimeString());
-
   res.redirect("/profile");
 });
 
+app.get('/like/:id', isLoggedIn ,async (req, res) => {
+  let post = await postModel.findOne({_id: req.params.id}).populate("user");
+  if(post.likes.indexOf(req.user.userid) === -1) post.likes.push(req.user.userid);
+  else post.likes.splice(post.likes.indexOf(req.user.userid),1)
+  await post.save();
+  res.redirect ("/profile");
+});
 
 function isLoggedIn(req, res, next) {
   if (!req.cookies.token) res.redirect("/login");
-  else {
     let data = jwt.verify(req.cookies.token, "secret_key");
     req.user = data;
+    // console.log(req.user);
     next();
-  }
 }
 
 app.listen(3000, () => {
