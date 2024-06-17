@@ -61,7 +61,9 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
-  if (!user) return res.redirect("/login");
+  if (!user) {
+    return res.redirect("/login");
+  }
   bcrypt.compare(password, user.password, (err, result) => {
     if (!result) return res.redirect("/login");
     const token = jwt.sign(
@@ -85,19 +87,25 @@ app.get("/profile", isLoggedIn, async (req, res) => {
 });
 
 app.post("/profile", isLoggedIn, async (req, res) => {
-  const { email } = req.user;
-  const user = await userModel.findOne({ email }).populate("posts");
-  const {content} = req.body;
+  let user = await userModel.findOne({ email: req.user.email }).populate("posts");
+  const { content } = req.body;
 
-  const post = await postModel.create({
-    user: user._id,
-    content
-  });
-  user.posts.push(post._id);
-  await user.save();
+  if (content && content.trim() !== "") {
+    const post = await postModel.create({
+      user: user._id,
+      content,
+    });
 
-  console.log(content,"at",new Date().toLocaleTimeString());
-  res.render("profile", { user });
+    // Log the created post to debug
+    console.log('Post created:', post);
+
+    user.posts.push(post._id);
+    await user.save();
+  }
+
+  console.log(content, "at", new Date().toLocaleTimeString());
+
+  res.redirect("/profile");
 });
 
 
