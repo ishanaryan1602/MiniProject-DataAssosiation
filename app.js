@@ -20,6 +20,11 @@ app.set("views", path.resolve("./views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(handleUnknownRoute);
+
+app.get("/homepage", (req, res) => {
+  res.render("homepage");
+});
 
 app.get("/register", (req, res) => {
   res.render("index");
@@ -130,6 +135,14 @@ function isLoggedIn(req, res, next) {
   req.user = data;
   // console.log(req.user);
   next();
+}
+
+function handleUnknownRoute(req, res, next) {
+  if (!res.headersSent) {
+    next();
+  } else {
+    res.send("Error: Page not found.");
+  }
 }
 
 app.listen(3000, () => {

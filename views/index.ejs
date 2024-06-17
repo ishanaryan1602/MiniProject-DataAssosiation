@@ -1,26 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-    <div class="w-full min-h-screen bg-zinc-900 text-white p-5 flex justify-center items-center">
-        <div class="container flex flex-col mx-auto w-[700px]">
-            <h1 class="text-3xl mb-5 text-center">Register User</h1>
-            <form action="/register" method="post" class="flex flex-col justify-center items-center">
-            <input class="border-2 outline-none bg-transparent px-3 py-2 border-zinc-800 rounded-md mb-2 w-1/2" type="text" placeholder="Username" name="username">
-            <input class="border-2 outline-none bg-transparent px-3 py-2 border-zinc-800 rounded-md mb-2 w-1/2" type="email" placeholder="Email" name="email">
-            <input class="border-2 outline-none bg-transparent px-3 py-2 border-zinc-800 rounded-md mb-2 w-1/2" type="password" placeholder="Password" name="password">
-            <input type="submit" value="Register" class="border-1 bg-blue-500 rounded-md px-5 py-2 w-1/2 mt-2">
-            <p class="mt-3">
-                Already have a account
-                <a href="/login" class="text-blue-400">Login</a>
-            </p>
-        </form>
-        </div>
+  </head>
+  <body class="bg-zinc-900">
+    <div class="w-full bg-zinc-900 flex justify-center py-5 mb-[100px]">
+      <div class="container text-white py-5">
+        <nav class="p-2 flex justify-between mb-5 items-center">
+          <div class="logo text-[18px] tracking-[5px]">
+            <a href="/homepage">ThinkDiary</a>
+          </div>
+          <div class="user-handle flex gap-4 items-center">
+            <a href="/login" class="font-light">Login</a>
+            <a href="/profile">Profile</a>
+          </div>
+        </nav>
+      </div>
     </div>
-</body>
+
+    <div
+      class="w-full bg-zinc-900 text-white p-5 flex justify-center items-center"
+    >
+      <div class="container flex flex-col mx-auto w-[700px]">
+        <h1 class="text-3xl mb-5 text-center">Register User</h1>
+        <form
+          action="/register"
+          method="post"
+          class="flex flex-col justify-center items-center"
+        >
+          <input
+            class="border-2 outline-none bg-transparent px-3 py-2 border-zinc-800 rounded-md mb-2 w-1/2"
+            type="text"
+            placeholder="Username"
+            name="username"
+          />
+          <input
+            class="border-2 outline-none bg-transparent px-3 py-2 border-zinc-800 rounded-md mb-2 w-1/2"
+            type="email"
+            placeholder="Email"
+            name="email"
+          />
+          <input
+            class="border-2 outline-none bg-transparent px-3 py-2 border-zinc-800 rounded-md mb-2 w-1/2"
+            type="password"
+            placeholder="Password"
+            name="password"
+          />
+          <input
+            type="submit"
+            value="Register"
+            class="border-1 bg-blue-500 rounded-md px-5 py-2 w-1/2 mt-2"
+          />
+          <p class="mt-3">
+            Already have a account
+            <a href="/login" class="text-blue-400">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>
