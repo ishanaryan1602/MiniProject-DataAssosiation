@@ -110,6 +110,20 @@ app.get('/like/:id', isLoggedIn ,async (req, res) => {
   res.redirect ("/profile");
 });
 
+app.get('/edit/:id', isLoggedIn ,async (req, res) => {
+  const post = await postModel.findOne({_id: req.params.id})
+  return res.render("edit",{
+    post
+  })
+});
+
+app.post('/update/:id', isLoggedIn ,async (req, res) => {
+  const post = await postModel.findOneAndUpdate({_id: req.params.id},{
+    content: req.body.content
+  })
+  return res.redirect("/profile");
+});
+
 function isLoggedIn(req, res, next) {
   if (!req.cookies.token) res.redirect("/login");
     let data = jwt.verify(req.cookies.token, "secret_key");
