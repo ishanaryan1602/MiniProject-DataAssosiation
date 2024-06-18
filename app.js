@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(handleUnknownRoute);
 
 app.get("/homepage", (req, res) => {
-  res.render("homepage");
+  res.render("homepage");  
 });
 
 app.get("/register", (req, res) => {
@@ -146,7 +146,6 @@ function handleUnknownRoute(req, res, next) {
 }
 
 app.get("*", handleUnknownRoute, function (req, res) {
-  // Handle unmatched routes here
   res.render("error")
 });
 
