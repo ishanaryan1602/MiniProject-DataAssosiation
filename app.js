@@ -6,6 +6,8 @@ const postModel = require("./models/post");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const multer = require("multer");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/miniProj")
@@ -21,9 +23,35 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(handleUnknownRoute);
+app.use(express.static(path.join(__dirname,'public')));
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/images/uploads");
+  },
+  filename: function (req, file, cb) {
+    crypto.randomBytes(12,function (err, bytes) {
+      const fn = bytes.toString("hex") + path.extname(file.originalname);
+      cb(null, fn);
+    });
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.get("/updatedp", (req, res) => {
+  res.render("updatedp");
+});
+
+app.post("/upload", isLoggedIn , upload.single("dp"), async (req, res) => {
+  let user = await userModel.findOne({ email: req.user.email});
+  user.profilepic = req.file.filename;
+  await user.save();
+  res.redirect("/profile");
+});
 
 app.get("/homepage", (req, res) => {
-  res.render("homepage");  
+  res.render("homepage");
 });
 
 app.get("/register", (req, res) => {
@@ -146,7 +174,7 @@ function handleUnknownRoute(req, res, next) {
 }
 
 app.get("*", handleUnknownRoute, function (req, res) {
-  res.render("error")
+  res.render("error");
 });
 
 app.listen(3000, () => {
